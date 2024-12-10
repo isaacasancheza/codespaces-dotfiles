@@ -88,7 +88,7 @@ zstyle :omz:plugins:ssh-agent lazy yes
 # suggested at https://blog.mattclemente.com/2020/06/26/oh-my-zsh-slow-to-load/
 export NVM_LAZY_LOAD=true
 export NVM_COMPLETION=true
-plugins=(git zsh-nvm ssh-agent evalcache zsh-direnv)
+plugins=(git zpy poetry zsh-nvm ssh-agent evalcache zsh-direnv auto-notify)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -130,6 +130,9 @@ bashcompinit
 # virtualenv inside project
 export PIPENV_VENV_IN_PROJECT=1
 
+# disable the homebrew built-in autoupdate
+export HOMEBREW_NO_AUTO_UPDATE="1"
+
 # local bin
 if [ -d "$HOME/.local/bin" ]; then
 	export PATH="$HOME/.local/bin:$PATH"
@@ -154,6 +157,19 @@ if [ -S "/run/user/$UID/docker.sock" ]; then
 	export DOCKER_HOST=unix:///run/user/$UID/docker.sock
 fi
 
+# Set up fzf key bindings and fuzzy completion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# pnpm
+export PNPM_HOME="/Users/isaac/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+# zsh-autoenv
+source ~/.zsh-autoenv/autoenv.zsh
 
